@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Beep Boop | Psychic Waddle</title>
+<script>
+	window.onload = function(){
+		// one context per document
+
+		const ctx = new (window.AudioContext || window.webkitAudioContext)();
+
+	  loop(ctx, 1, 1000);
+	  loop(ctx, .5, 500);
+	}
+
+	function tone(ctx,type,length){
+		let osc = ctx.createOscillator();
+		let vol = ctx.createGain();
+		osc.connect(vol);
+		vol.connect(ctx.destination);
+		vol.gain.value = 0.1;
+
+	  osc.frequency.value = frequency();
+	  osc.type = type;
+	  osc.start();
+	  osc.stop(ctx.currentTime + length);
+	}
+
+	function frequency(){
+		// fn = f0 * (a)n 
+		// f0 = 440 A above middle C
+		// a = (2)^1/12 a constant
+		const f0 = 440;
+		const a = Math.pow(2,(1/12));
+		let n = getNote('major');
+		let fn = f0 * Math.pow(a,n)
+		return fn;
+	}
+
+	function getNote(key) {
+		const major = [0, 2, 4, 5, 7, 9, 11, 12];
+		const minor = [0, 2, 3, 5, 7, 8, 10, 12];
+
+		let min = 0;
+		let max = 7;
+   	let index = Math.floor(Math.random() * (max - min + 1)) + min;
+   	if(key === 'major'){
+   		return (major[index] - 12);
+   	}
+   	if(key === 'minor'){
+   		return (minor[index] - 12);
+   	}
+
+	}
+
+	function loop(ctx, noteLength,wait){
+		setTimeout(function(){
+			tone(ctx,'sine', noteLength);
+			loop(ctx, noteLength, wait);
+		}, wait)
+	}
+</script>
+</head>
+<body>
+
+</body>
+</html>
