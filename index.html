@@ -14,10 +14,10 @@
 
 	function tone(ctx,type,length){
 		let osc = ctx.createOscillator();
-		/*let vol = ctx.createGain();
+		let vol = ctx.createGain();
 		osc.connect(vol);
 		vol.connect(ctx.destination);
-		vol.gain.value = 0.1;*/
+		vol.gain.value = 1;
 
 	  osc.frequency.value = frequency();
 	  osc.type = type;
